@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>موسوعة الرياضيات التفاعلية</title>
+<style>
+:root{font-family:Arial,Tahoma,sans-serif;color:#263445;background:#f7fbfc}*{box-sizing:border-box}body{margin:0}header{background:linear-gradient(110deg,#d9f5f2,#f6e9f5);padding:42px 18px;text-align:center}h1{font-size:clamp(26px,5vw,42px);margin:0 0 12px}header p{font-size:18px}main{max-width:1000px;margin:25px auto;padding:0 16px}.search{width:100%;padding:17px;border:2px solid #9edbd7;border-radius:14px;font-size:18px;margin-bottom:22px}.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}.tabs button{border:1px solid #a6d8d6;background:white;border-radius:25px;padding:12px 20px;cursor:pointer;font-weight:bold;font-size:16px}.tabs button.active{background:#c6eee9}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}.card{background:white;border:1px solid #e2ebef;border-radius:18px;padding:22px;box-shadow:0 5px 18px #c9d8e022}.card h2{margin-top:0;color:#327f82;font-size:22px}.card p{line-height:1.9}.example{background:#f2f9fa;border-radius:10px;padding:12px;line-height:1.8}footer{text-align:center;padding:35px;color:#60717c}.empty{padding:24px;text-align:center}button:focus-visible,input:focus-visible{outline:3px solid #5a9bff}
+</style>
+</head>
+<body><header><h1>موسوعة الرياضيات التفاعلية</h1><p>تعلّم المفاهيم والقوانين الرياضية بأمثلة واضحة ومبسطة</p><p>إعداد أ. حسناء الغامدي</p></header>
+<main><input class="search" id="search" type="search" placeholder="ابحثي عن مفهوم أو قانون رياضي..." aria-label="البحث في الموسوعة"><nav class="tabs" id="tabs" aria-label="المراحل الدراسية"></nav><section class="grid" id="cards" aria-live="polite"></section></main><footer>موسوعة الرياضيات | نسخة أولية قابلة للتطوير</footer>
+<script>
+const lessons=[
+{stage:'ابتدائي',title:'الجمع والطرح',desc:'الجمع لإيجاد المجموع، والطرح لإيجاد الفرق بين عددين.',example:'٨ + ٥ = ١٣، و١٣ − ٥ = ٨'},
+{stage:'ابتدائي',title:'الكسور',desc:'الكسر يمثل جزءًا من كل، ويتكون من بسط ومقام.',example:'١/٢ يعني جزءًا واحدًا من جزأين متساويين'},
+{stage:'ابتدائي',title:'محيط المستطيل',desc:'محيط المستطيل يساوي ضعف مجموع الطول والعرض.',example:'المحيط = ٢ × (الطول + العرض)'},
+{stage:'متوسط',title:'نظرية فيثاغورس',desc:'في المثلث القائم: مربع طول الوتر يساوي مجموع مربعي طولي الضلعين القائمين.',example:'٣² + ٤² = ٥²'},
+{stage:'متوسط',title:'الزوايا المتقابلة بالرأس',desc:'عندما يتقاطع مستقيمان، تكون كل زاويتين متقابلتين بالرأس متساويتين في القياس.',example:'إذا كانت إحدى الزوايا ٦٠° فمقابلتها بالرأس ٦٠°'},
+{stage:'متوسط',title:'النسبة المئوية',desc:'النسبة المئوية تعني عدد الأجزاء من كل مئة.',example:'٢٥٪ من ٢٠٠ = ٥٠'},
+{stage:'ثانوي',title:'ميل المستقيم',desc:'ميل المستقيم يساوي التغير في الإحداثي الصادي مقسومًا على التغير في الإحداثي السيني عندما لا يساوي المقام صفرًا.',example:'m = (y₂ − y₁) / (x₂ − x₁)'},
+{stage:'ثانوي',title:'الدالة التربيعية',desc:'يمكن كتابة الدالة التربيعية على الصورة f(x)=ax²+bx+c حيث a لا يساوي صفرًا.',example:'f(x) = x² − 4x + 3'},
+{stage:'ثانوي',title:'قانون الاحتمال',desc:'عند تساوي فرص النواتج: احتمال الحدث = عدد النواتج الملائمة ÷ عدد النواتج الممكنة.',example:'احتمال ظهور عدد زوجي عند رمي نرد عادل = ٣/٦ = ١/٢'}
+];
+let stage='الكل';const tabs=document.getElementById('tabs'),cards=document.getElementById('cards'),search=document.getElementById('search');
+function render(){tabs.innerHTML='';['الكل','ابتدائي','متوسط','ثانوي'].forEach(s=>{const b=document.createElement('button');b.textContent=s;b.className=s===stage?'active':'';b.setAttribute('aria-pressed',s===stage);b.onclick=()=>{stage=s;render()};tabs.append(b)});cards.innerHTML='';const q=search.value.trim();const filtered=lessons.filter(l=>(stage==='الكل'||l.stage===stage)&&(`${l.title} ${l.desc} ${l.example}`.includes(q)));filtered.forEach(l=>{const article=document.createElement('article');article.className='card';const h=document.createElement('h2');h.textContent=l.title;const p=document.createElement('p');p.textContent=l.desc;const ex=document.createElement('div');ex.className='example';ex.textContent='مثال: '+l.example;article.append(h,p,ex);cards.append(article)});if(!filtered.length){const p=document.createElement('p');p.className='empty';p.textContent='لا توجد نتائج مطابقة للبحث.';cards.append(p)}}search.addEventListener('input',render);render();
+</script></body></html>
